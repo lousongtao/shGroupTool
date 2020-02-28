@@ -28,6 +28,7 @@ public class GroupDao {
             transaction.commit();
             return group.getId();
         } catch (Exception e){
+            e.printStackTrace();
             if (transaction != null)
                 transaction.rollback();
             return 0;

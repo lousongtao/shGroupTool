@@ -103,6 +103,7 @@ public class AddGroupDialog extends JDialog implements ActionListener, ItemListe
         if ((int)wd.getReturnResult() >= 1){
             mainFrame.getGroups().add(group);
             mainFrame.getGroupPanel().loadData(mainFrame.getGroups());
+            setVisible(false);
             JOptionPane.showMessageDialog(mainFrame, "add group successfully.");
         } else {
             JOptionPane.showMessageDialog(this, "add group failed.");

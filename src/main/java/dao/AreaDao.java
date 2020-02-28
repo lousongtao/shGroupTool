@@ -28,6 +28,7 @@ public class AreaDao {
             transaction.commit();
             return area.getId();
         } catch (Exception e){
+            e.printStackTrace();
             if (transaction != null)
                 transaction.rollback();
             return 0;

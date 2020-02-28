@@ -38,7 +38,7 @@ public class AddStreetDialog extends JDialog implements ActionListener {
         cbArea.setSelectedIndex(-1);
         Container c = getContentPane();
         c.setLayout(new GridLayout(0, 2, 10, 10));
-        c.add(new JLabel("Name"));
+        c.add(new JLabel("Street Name"));
         c.add(tfName);
         c.add(new JLabel("Area"));
         c.add(cbArea);
@@ -86,6 +86,7 @@ public class AddStreetDialog extends JDialog implements ActionListener {
         if ((int)wd.getReturnResult() >= 1){
             mainFrame.getAreas().add(street);
             JOptionPane.showMessageDialog(mainFrame, "add street successfully.");
+            setVisible(false);
         } else {
             JOptionPane.showMessageDialog(this, "add street failed.");
         }

@@ -30,6 +30,7 @@ public class GroupMemberDao {
             transaction.commit();
             return gms;
         } catch (Exception e){
+            e.printStackTrace();
             if (transaction != null)
                 transaction.rollback();
             return null;

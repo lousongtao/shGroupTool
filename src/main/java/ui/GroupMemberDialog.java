@@ -32,6 +32,7 @@ public class GroupMemberDialog extends JDialog implements ActionListener {
 
     private void initData(){
         List<GroupMember> gms = mainFrame.getGroupMembers().stream().filter(gs -> gs.getGroup_id() == group.getId()).collect(Collectors.toList());
+        groupMembers.clear();
         groupMembers.addAll(gms);
         tableModel.fireTableDataChanged();
     }
@@ -52,6 +53,7 @@ public class GroupMemberDialog extends JDialog implements ActionListener {
         c.add(jsp, BorderLayout.CENTER);
         c.add(pButton, BorderLayout.SOUTH);
         setModal(true);
+        setTitle("Group Member Management");
         setSize(mainFrame.getWidth(), mainFrame.getHeight());
         setLocation(mainFrame.getLocation());
         btnAddMember.addActionListener(this);
@@ -120,6 +122,7 @@ public class GroupMemberDialog extends JDialog implements ActionListener {
         } else {
             JOptionPane.showMessageDialog(this, "save successfully");
             mainFrame.getGroupMembers().addAll(gms2);
+            initData();
         }
     }
 
