@@ -2,16 +2,14 @@ package bean;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
 @Table(name="cmf_group")
 public class Group {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private byte status;
@@ -21,6 +19,6 @@ public class Group {
     @Column(columnDefinition = "TEXT")
     private String intro;
     private String cover;
-    private String areaName;
-    private String streetName;
+    private String area_name;
+    private String street_name;
 }

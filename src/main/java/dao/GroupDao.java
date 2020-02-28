@@ -1,32 +1,32 @@
 package dao;
 
-import bean.Area;
 import bean.Group;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class AreaDao {
+public class GroupDao {
 
-    public List<Area> getAreas(){
+    public List<Group> getAllGroup(){
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            return session.createQuery("from Area", Area.class).list();
+            return session.createQuery("from Group", Group.class).list();
         } finally {
             session.close();
         }
     }
-    public int saveArea(Area area){
+
+    public int saveGroup(Group group){
         Session session = null;
         Transaction transaction = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.save(area);
+            session.save(group);
             transaction.commit();
-            return area.getId();
+            return group.getId();
         } catch (Exception e){
             if (transaction != null)
                 transaction.rollback();

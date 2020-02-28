@@ -13,22 +13,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AddGroupDialog extends JDialog implements ActionListener, ItemListener {
+public class AddStreetDialog extends JDialog implements ActionListener {
     private JTextField tfName = new JTextField();
     private JComboBox<Area> cbArea = new JComboBox<>();
-    private JComboBox<Area> cbStreet = new JComboBox<>();
     private JButton btnSave = new JButton("Save");
     private JButton btnClose = new JButton("Close");
     private MainFrame mainFrame;
     private List<Area> areas;
 
-    public AddGroupDialog(MainFrame mainFrame, List<Area> areas){
+    public AddStreetDialog(MainFrame mainFrame, List<Area> areas){
         this.areas = areas;
         this.mainFrame = mainFrame;
         initUI();
         setModal(true);
-        setTitle("Add Group");
-        setSize(400, 200);
+        setTitle("Add Street");
+        setSize(400, 150);
         this.setLocation((int)(mainFrame.getWidth() / 2 - this.getWidth() /2 + mainFrame.getLocation().getX()),
                 (int)(mainFrame.getHeight() / 2 - this.getHeight() / 2 + mainFrame.getLocation().getY()));
     }
@@ -43,14 +42,10 @@ public class AddGroupDialog extends JDialog implements ActionListener, ItemListe
         c.add(tfName);
         c.add(new JLabel("Area"));
         c.add(cbArea);
-        c.add(new JLabel("Street"));
-        c.add(cbStreet);
         c.add(btnSave);
         c.add(btnClose);
         btnSave.addActionListener(this);
         btnClose.addActionListener(this);
-        cbArea.addItemListener(this);
-        cbStreet.addItemListener(this);
     }
 
     @Override
@@ -67,57 +62,32 @@ public class AddGroupDialog extends JDialog implements ActionListener, ItemListe
             JOptionPane.showMessageDialog(this, "input name");
             return;
         }
-        for (int i = 0; i < mainFrame.getGroups().size(); i++) {
-            Group g = mainFrame.getGroups().get(i);
-            if (tfName.equals(g.getName())){
-                JOptionPane.showMessageDialog(this, "Group name duplicate for "+ g.getName());
-                return;
-            }
-        }
         if (cbArea.getSelectedIndex() == -1){
             JOptionPane.showMessageDialog(this, "select area");
             return;
         }
-        if (cbStreet.getSelectedIndex() == -1){
-            JOptionPane.showMessageDialog(this, "select street");
-            return;
+        for (int i = 0; i < mainFrame.getAreas().size(); i++) {
+            Area area = mainFrame.getAreas().get(i);
+            if (area.getPid() == ((Area)cbArea.getSelectedItem()).getId()
+                    && area.getLabel().equals(tfName.getText())){
+                JOptionPane.showMessageDialog(this, "Street name duplicate for "+ tfName.getText());
+                return;
+            }
         }
-        Area area = (Area)cbArea.getSelectedItem();
-        Area street = (Area)cbStreet.getSelectedItem();
-        Group group = new Group();
-        group.setName(tfName.getText());
-        group.setStatus((byte)1);
-        group.setTime(0);
-        group.setCover("");
-        group.setIntro("");
-        group.setArea(area.getId());
-        group.setStreet(street.getId());
-        group.setArea_name(area.getLabel());
-        group.setStreet_name(street.getLabel());
+        Area street = new Area();
+        street.setPid(((Area)cbArea.getSelectedItem()).getId());
+        street.setLabel(tfName.getText());
         WaitingDialog wd = new WaitingDialog() {
             @Override
             public Object work() {
-                return mainFrame.getGroupDao().saveGroup(group);
+                return mainFrame.getAreaDao().saveArea(street);
             }
         };
         if ((int)wd.getReturnResult() >= 1){
-            mainFrame.getGroups().add(group);
-            mainFrame.getGroupPanel().loadData(mainFrame.getGroups());
-            JOptionPane.showMessageDialog(mainFrame, "add group successfully.");
+            mainFrame.getAreas().add(street);
+            JOptionPane.showMessageDialog(mainFrame, "add street successfully.");
         } else {
-            JOptionPane.showMessageDialog(this, "add group failed.");
-        }
-    }
-
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-        if (cbArea == e.getSource()){
-            if (e.getStateChange() == ItemEvent.SELECTED){
-                Area area = (Area) e.getItem();
-                cbStreet.removeAllItems();
-                List<Area> streets = areas.stream().filter(area1 -> area1.getPid() == area.getId()).collect(Collectors.toList());
-                streets.forEach(s -> cbStreet.addItem(s));
-            }
+            JOptionPane.showMessageDialog(this, "add street failed.");
         }
     }
 

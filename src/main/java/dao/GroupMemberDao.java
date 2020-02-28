@@ -1,36 +1,38 @@
 package dao;
 
-import bean.Area;
-import bean.Group;
+import bean.GroupMember;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class AreaDao {
-
-    public List<Area> getAreas(){
+public class GroupMemberDao {
+    public List<GroupMember> getAllGroupMember(){
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            return session.createQuery("from Area", Area.class).list();
+            return session.createQuery("from GroupMember", GroupMember.class).list();
         } finally {
             session.close();
         }
     }
-    public int saveArea(Area area){
+
+    public List<GroupMember> save(List<GroupMember> gms){
         Session session = null;
         Transaction transaction = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.save(area);
+            for (int i = 0; i < gms.size(); i++) {
+                session.save(gms.get(i));
+            }
+
             transaction.commit();
-            return area.getId();
+            return gms;
         } catch (Exception e){
             if (transaction != null)
                 transaction.rollback();
-            return 0;
+            return null;
         } finally {
             if (session != null)
                 session.close();

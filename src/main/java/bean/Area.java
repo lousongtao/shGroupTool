@@ -14,4 +14,9 @@ public class Area {
     private int id;
     private int pid;
     private String label;
+
+    @Override
+    public String toString() {
+        return id + " " + label ;
+    }
 }
