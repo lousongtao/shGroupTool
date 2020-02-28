@@ -69,8 +69,7 @@ public class GroupPanel extends JPanel implements ActionListener {
             return;
         }
         Group g = groups.get(table.getSelectedRow());
-        GroupMemberDialog dlg = new GroupMemberDialog(mainFrame, g);
-        dlg.setVisible(true);
+        mainFrame.addGroupMember(g);
     }
 
     private void addGroup(){

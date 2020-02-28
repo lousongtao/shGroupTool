@@ -24,6 +24,8 @@ public class MainFrame extends JFrame {
     private GroupDao groupDao = new GroupDao();
     private GroupMemberDao groupMemberDao = new GroupMemberDao();
     private GroupPanel groupPanel = new GroupPanel(this);
+    private GroupMemberPanel groupMemberPanel = new GroupMemberPanel(this);
+    private JTabbedPane tab = new JTabbedPane();
     public MainFrame(){
         initUI();
         loadData();
@@ -33,22 +35,24 @@ public class MainFrame extends JFrame {
         Container c = this.getContentPane();
         c.setLayout(new BorderLayout());
 
-        c.add(groupPanel, BorderLayout.CENTER);
+        tab.add(groupPanel, "Group");
+        tab.add(groupMemberPanel, "Group Member");
+        c.add(tab, BorderLayout.CENTER);
+    }
+
+    public void addGroupMember(Group group){
+        tab.setSelectedComponent(groupMemberPanel);
+        groupMemberPanel.setGroup(group);
     }
 
     private void loadData(){
-        WaitingDialog wdlg = new WaitingDialog() {
-            @Override
-            public Object work() {
-                areas = areaDao.getAreas();
-                System.out.println("Query area successfully. Get results : " + areas.size());
-                groups = groupDao.getAllGroup();
-                System.out.println("Query group successfully. Get results : " + groups.size());
-                groupMembers = groupMemberDao.getAllGroupMember();
-                System.out.println("Query group member successfully. Get results : " + groupMembers.size());
-                return null;
-            }
-        };
+        areas = areaDao.getAreas();
+        System.out.println("Query area successfully. Get results : " + areas.size());
+        groups = groupDao.getAllGroup();
+        System.out.println("Query group successfully. Get results : " + groups.size());
+        groupMembers = groupMemberDao.getAllGroupMember();
+        System.out.println("Query group member successfully. Get results : " + groupMembers.size());
+
         groupPanel.loadData(groups);
     }
 

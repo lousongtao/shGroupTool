@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GroupMemberDialog extends JDialog implements ActionListener {
+public class GroupMemberPanel extends JPanel implements ActionListener {
     private MainFrame mainFrame;
     private Group group;
     private JLabel lbGroup = new JLabel("");
@@ -22,15 +22,20 @@ public class GroupMemberDialog extends JDialog implements ActionListener {
     private JButton btnAddMember = new JButton("Add");
     private JButton btnSave = new JButton("Save");
     private JButton btnRemove = new JButton("Remove");
-    private JButton btnClose = new JButton("Close");
-    public GroupMemberDialog(MainFrame mainFrame, Group group){
+    public GroupMemberPanel(MainFrame mainFrame){
         this.mainFrame = mainFrame;
-        this.group = group;
         initUI();
+    }
+
+    public void setGroup(Group group){
+        this.group = group;
+        lbGroup.setText("Group ID : " + group.getId() + ", name : " + group.getName() + ", area : " + group.getArea_name() + ", street : " + group.getStreet_name());
         initData();
     }
 
     private void initData(){
+        if (mainFrame.getGroupMembers() == null)
+            return;
         List<GroupMember> gms = mainFrame.getGroupMembers().stream().filter(gs -> gs.getGroup_id() == group.getId()).collect(Collectors.toList());
         groupMembers.clear();
         groupMembers.addAll(gms);
@@ -38,7 +43,7 @@ public class GroupMemberDialog extends JDialog implements ActionListener {
     }
 
     private void initUI(){
-        lbGroup.setText("Group ID : " + group.getId() + ", name : " + group.getName() + ", area : " + group.getArea_name() + ", street : " + group.getStreet_name());
+
         table.setModel(tableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane jsp = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -46,18 +51,13 @@ public class GroupMemberDialog extends JDialog implements ActionListener {
         pButton.add(btnAddMember);
         pButton.add(btnRemove);
         pButton.add(btnSave);
-        pButton.add(btnClose);
-        Container c = getContentPane();
-        c.setLayout(new BorderLayout());
-        c.add(lbGroup, BorderLayout.NORTH);
-        c.add(jsp, BorderLayout.CENTER);
-        c.add(pButton, BorderLayout.SOUTH);
-        setModal(true);
-        setTitle("Group Member Management");
+        setLayout(new BorderLayout());
+        add(lbGroup, BorderLayout.NORTH);
+        add(jsp, BorderLayout.CENTER);
+        add(pButton, BorderLayout.SOUTH);
         setSize(mainFrame.getWidth(), mainFrame.getHeight());
         setLocation(mainFrame.getLocation());
         btnAddMember.addActionListener(this);
-        btnClose.addActionListener(this);
         btnRemove.addActionListener(this);
         btnSave.addActionListener(this);
     }
@@ -68,8 +68,6 @@ public class GroupMemberDialog extends JDialog implements ActionListener {
             doSave();
         } else if (e.getSource() == btnRemove){
             doRemove();
-        } else if (e.getSource() == btnClose){
-            setVisible(false);
         } else if (e.getSource() == btnAddMember){
             doAdd();
         }
@@ -110,13 +108,7 @@ public class GroupMemberDialog extends JDialog implements ActionListener {
             JOptionPane.showMessageDialog(this, "no new record");
             return;
         }
-        WaitingDialog wd = new WaitingDialog() {
-            @Override
-            public Object work() {
-                return mainFrame.getGroupMemberDao().save(gms);
-            }
-        };
-        List<GroupMember> gms2 = (List<GroupMember>)wd.getReturnResult();
+        List<GroupMember> gms2 = mainFrame.getGroupMemberDao().save(gms);
         if (gms2 == null){
             JOptionPane.showMessageDialog(this, "save failed");
         } else {

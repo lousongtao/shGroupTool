@@ -12,7 +12,7 @@ public class AddGroupMemberDialog extends JDialog implements ActionListener {
     private JTextField tfIDCard = new JTextField();
     private JTextField tfTelephone = new JTextField();
     private GroupMember gm;
-    private JButton btnSave = new JButton("Save");
+    private JButton btnSave = new JButton("Add into list");
     private JButton btnClose = new JButton("Close");
     private JRadioButton rb1 = new JRadioButton("组员", true);
     private JRadioButton rb2 = new JRadioButton("组长助理");

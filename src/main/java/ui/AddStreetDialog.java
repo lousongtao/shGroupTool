@@ -77,13 +77,9 @@ public class AddStreetDialog extends JDialog implements ActionListener {
         Area street = new Area();
         street.setPid(((Area)cbArea.getSelectedItem()).getId());
         street.setLabel(tfName.getText());
-        WaitingDialog wd = new WaitingDialog() {
-            @Override
-            public Object work() {
-                return mainFrame.getAreaDao().saveArea(street);
-            }
-        };
-        if ((int)wd.getReturnResult() >= 1){
+        int id = mainFrame.getAreaDao().saveArea(street);
+
+        if (id >= 1){
             mainFrame.getAreas().add(street);
             JOptionPane.showMessageDialog(mainFrame, "add street successfully.");
             setVisible(false);

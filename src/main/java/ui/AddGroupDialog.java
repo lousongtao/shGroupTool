@@ -94,13 +94,8 @@ public class AddGroupDialog extends JDialog implements ActionListener, ItemListe
         group.setStreet(street.getId());
         group.setArea_name(area.getLabel());
         group.setStreet_name(street.getLabel());
-        WaitingDialog wd = new WaitingDialog() {
-            @Override
-            public Object work() {
-                return mainFrame.getGroupDao().saveGroup(group);
-            }
-        };
-        if ((int)wd.getReturnResult() >= 1){
+        int id = mainFrame.getGroupDao().saveGroup(group);
+        if (id >= 1){
             mainFrame.getGroups().add(group);
             mainFrame.getGroupPanel().loadData(mainFrame.getGroups());
             setVisible(false);
