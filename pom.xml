@@ -40,7 +40,8 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-
+            <!-- use "mvn package" to generate a single runnable file-->
+            <!-- use "java -jar xxx.jar" run this project-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -55,6 +56,14 @@
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

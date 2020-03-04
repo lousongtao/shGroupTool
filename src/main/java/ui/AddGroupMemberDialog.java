@@ -14,11 +14,11 @@ public class AddGroupMemberDialog extends JDialog implements ActionListener {
     private GroupMember gm;
     private JButton btnSave = new JButton("Add into list");
     private JButton btnClose = new JButton("Close");
-    private JRadioButton rb1 = new JRadioButton("组员", true);
-    private JRadioButton rb2 = new JRadioButton("组长助理");
-    private JRadioButton rb3 = new JRadioButton("卫生干部");
-    private JRadioButton rb4 = new JRadioButton("指导医生");
-    private JRadioButton rb5 = new JRadioButton("组长");
+    private JRadioButton rb1 = new JRadioButton(Messages.getString("Role.GroupMember"), true);//组员
+    private JRadioButton rb2 = new JRadioButton(Messages.getString("Role.CaptainAssist"));//组长助理
+    private JRadioButton rb3 = new JRadioButton(Messages.getString("Role.HealthPerson"));//卫生干部
+    private JRadioButton rb4 = new JRadioButton(Messages.getString("Role.Doctor"));//指导医生
+    private JRadioButton rb5 = new JRadioButton(Messages.getString("Role.Captain"));//组长
 
     private MainFrame mainFrame;
     public AddGroupMemberDialog(MainFrame mainFrame){
